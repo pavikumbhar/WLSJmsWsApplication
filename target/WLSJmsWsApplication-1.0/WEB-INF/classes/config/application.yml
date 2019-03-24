@@ -1,0 +1,11 @@
+spring:
+    application:
+        name: WLSJmsWsApplication
+    profiles:
+      active: dev
+logging:
+  level:
+      org.springframework: INFO
+      com.pavikumbhar.javaheart: DEBUG  
+   
+     
