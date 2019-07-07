@@ -33,6 +33,6 @@ cxf:
  path: '/ws'
  
 app:
-    propertyLoc: F:/STSWorkSpace2019/WLSJmsWsApplication/src/main/resources/properties/
+    propertyLoc: src/main/resources/properties/
         
   

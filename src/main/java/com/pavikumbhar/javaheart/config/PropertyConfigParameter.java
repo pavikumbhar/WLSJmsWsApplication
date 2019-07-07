@@ -5,8 +5,7 @@ import lombok.Getter;
 
 /**
  * Configuration class to define the required attributes for properties loading.<br>
- * Filename and whether it needs to be reloaded on any change on-the-fly 
- * need to be defined here.
+ * Filename and whether it needs to be reloaded on any change on-the-fly need to be defined here.
  */
 @AllArgsConstructor
 @Getter

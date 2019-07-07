@@ -9,6 +9,7 @@ import org.springframework.jms.support.destination.JndiDestinationResolver;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 /**
  * 
  * @author pavikumbhar
@@ -17,16 +18,16 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class JmsDestinationParameter {
-	
-	private String queueName;
     
-	private QueueConnectionFactory connectionFactory;
+    private String queueName;
+    
+    private QueueConnectionFactory connectionFactory;
     
     private JndiDestinationResolver jndiDestinationResolver;
     
     private String concurrency;
     /**
-     *  Specify the number of concurrent consumers to create. Default is 1.
+     * Specify the number of concurrent consumers to create. Default is 1.
      */
     private String concurrentConsumers;
     
@@ -34,5 +35,4 @@ public class JmsDestinationParameter {
     
     private Properties jndiProperties;
     
-
 }

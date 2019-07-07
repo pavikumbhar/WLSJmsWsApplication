@@ -13,8 +13,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *  Utility class to create property related configurations.
- *  @author pavikumbhar
+ * Utility class to create property related configurations.
+ * 
+ * @author pavikumbhar
  *
  */
 @Slf4j
@@ -33,10 +34,10 @@ public class PropertyConfiguration {
     private static Configuration createConfig(String baseLocation, PropertyConfigParameter propertyConfigParameter) {
         PropertiesConfiguration propertiesConfiguration = null;
         try {
-        	propertiesConfiguration = new PropertiesConfiguration(baseLocation + propertyConfigParameter.getFileName());
+            propertiesConfiguration = new PropertiesConfiguration(baseLocation + propertyConfigParameter.getFileName());
             if (propertyConfigParameter.isReload()) {
                 // It's important to set new object of reload strategy for each config
-            	propertiesConfiguration.setReloadingStrategy(new FileChangedReloadingStrategy());
+                propertiesConfiguration.setReloadingStrategy(new FileChangedReloadingStrategy());
             }
         } catch (ConfigurationException e) {
             log.error(e.getMessage(), e);
@@ -59,7 +60,5 @@ public class PropertyConfiguration {
         propertyConfigParameters.forEach(propertyConfig -> compositeConfiguration.addConfiguration(createConfig(baseLocation, propertyConfig)));
         return compositeConfiguration;
     }
-    
- 
     
 }

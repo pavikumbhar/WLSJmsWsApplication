@@ -1,6 +1,5 @@
 package com.pavikumbhar.javaheart.config;
 
-
 import static com.pavikumbhar.javaheart.constants.AppConstants.JMS_PROPERTIES;
 import static com.pavikumbhar.javaheart.constants.AppConstants.WS_PROPERTIES;
 
@@ -15,8 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Manager class for all the property files in application.<br>
- * Internally manages changes to property files on-the-fly and
- * provides the latest values.
+ * Internally manages changes to property files on-the-fly and provides the latest values.
  */
 @Component
 public class PropertyManager {

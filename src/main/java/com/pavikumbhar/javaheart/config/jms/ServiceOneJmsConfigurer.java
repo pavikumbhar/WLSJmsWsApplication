@@ -27,7 +27,6 @@ import com.pavikumbhar.javaheart.config.JmsDestinationParameter;
 import com.pavikumbhar.javaheart.config.WLSJmsConfiguration;
 import com.pavikumbhar.javaheart.jms.listener.ServiceOneMessageListener;
 
-
 /**
  * Configurer for ServiceOne JMS interface
  */
@@ -70,18 +69,18 @@ public class ServiceOneJmsConfigurer extends WLSJmsConfiguration {
     /** Queue on which response is to be posted */
     @Bean
     public Destination serviceOneResponseQueue() {
-        return  lookupResource(getProperty(SERVICE_ONE_RESPONSE_QUEUE),Destination.class);
+        return lookupResource(getProperty(SERVICE_ONE_RESPONSE_QUEUE), Destination.class);
     }
     
     @Override
     protected Properties jndiProperties() {
         return serviceOneJndiProperties();
     }
-
+    
     @Bean
     public DefaultMessageListenerContainer serviceOneJmsContainer() {
-    	JmsDestinationParameter jmsDestinationParameter = new JmsDestinationParameter(SERVICE_ONE_REQUEST_QUEUE, serviceOneConnectionFactory(), serviceOneJndiDestinationResolver(), SERVICE_ONE_CONCURRENCY,
-                SERVICE_ONE_CONCURRENT_CONSUMERS, messageListener, serviceOneJndiProperties());
+        JmsDestinationParameter jmsDestinationParameter = new JmsDestinationParameter(SERVICE_ONE_REQUEST_QUEUE, serviceOneConnectionFactory(),
+                serviceOneJndiDestinationResolver(), SERVICE_ONE_CONCURRENCY, SERVICE_ONE_CONCURRENT_CONSUMERS, messageListener, serviceOneJndiProperties());
         return createJmsContainer(jmsDestinationParameter);
     }
     

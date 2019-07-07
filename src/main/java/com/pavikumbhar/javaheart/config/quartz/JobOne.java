@@ -14,11 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 @DisallowConcurrentExecution
 @Slf4j
-public class JobOne  extends QuartzJobBean {
-
-   
+public class JobOne extends QuartzJobBean {
+    
     @Override
-	protected void executeInternal(JobExecutionContext jec) throws JobExecutionException {
-		log.debug("###Job {}  invoked at : {}", JobOne.class.getSimpleName(), new java.util.Date());
-	}
+    protected void executeInternal(JobExecutionContext jec) throws JobExecutionException {
+        log.debug("###Job {}  invoked at : {}", JobOne.class.getSimpleName(), new java.util.Date());
+    }
 }

@@ -1,6 +1,5 @@
 package com.pavikumbhar.javaheart.util;
 
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -13,10 +12,10 @@ import java.util.List;
  *
  */
 public final class ReflectionUtils {
-
+    
     private ReflectionUtils() {
     }
-
+    
     /**
      * Return a list of Field objects reflecting all the fields declared by the Class object. This
      * includes public, protected, default (package) access, and private fields, includes inherited
@@ -28,17 +27,21 @@ public final class ReflectionUtils {
      * @see {@link #getFieldsInClass(Class)} {@link #getFieldsInSuperclass(Class)}
      */
     public static final List<Field> getFields(final Class<?> clazz) {
-        if (clazz == null) return null;
-
+        if (clazz == null) {
+            return null;
+        }
+        
         // Get fields in class
         List<Field> fields = getFieldsInClass(clazz);
-        if (fields == null) fields = new ArrayList<Field>();
+        if (fields == null) {
+            fields = new ArrayList<>();
+        }
         // Add all fields in superclass
         fields.addAll(getFieldsInSuperclass(clazz));
-
+        
         return fields.isEmpty() ? null : fields;
     }
-
+    
     /**
      * Return a list of Field objects reflecting all the fields declared by the Class object. This
      * includes public, protected, default (package) access, and private fields, not includes
@@ -50,17 +53,19 @@ public final class ReflectionUtils {
      * @see {@link #getFields(Class)} {@link #getFieldsInSuperclass(Class)}
      */
     public static final List<Field> getFieldsInClass(final Class<?> clazz) {
-        if (clazz == null) return null;
-
+        if (clazz == null) {
+            return null;
+        }
+        
         // Get fields in class
-        List<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<>();
         for (Field field : clazz.getDeclaredFields()) {
             fields.add(field);
         }
-
+        
         return fields.isEmpty() ? null : fields;
     }
-
+    
     /**
      * Return a list of Field objects reflecting all the fields declared by the superclass object.
      * This includes public, protected, default (package) access, and private fields, includes
@@ -72,87 +77,91 @@ public final class ReflectionUtils {
      * @see {@link #getFields(Class)} {@link #getFieldsInClass(Class)}
      */
     public static final List<Field> getFieldsInSuperclass(final Class<?> clazz) {
-        if (clazz == null) return null;
-
+        if (clazz == null) {
+            return null;
+        }
+        
         // Get superclass
         Class<?> superClass = clazz.getSuperclass();
-        List<Field> fieldsSuperclass = new ArrayList<Field>();
-
+        List<Field> fieldsSuperclass = new ArrayList<>();
+        
         // Recursive loop to get field in superclass
         while (superClass != Object.class) {
-            List<Field> fields = new ArrayList<Field>();
+            List<Field> fields = new ArrayList<>();
             for (Field field : superClass.getDeclaredFields()) {
                 fields.add(field);
             }
-
+            
             if (fields != null && !fields.isEmpty()) {
                 fieldsSuperclass.addAll(fields);
             }
             superClass = superClass.getSuperclass();
         }
-
+        
         return fieldsSuperclass;
     }
-
+    
     /**
-     * An convenience method, equivalent to {@link #getFieldsWithAnyAnnotations(Class, Class...)} <p/>
+     * An convenience method, equivalent to {@link #getFieldsWithAnyAnnotations(Class, Class...)}
+     * <p/>
      * Return a list of Field objects reflecting any fields that has at least one annotation class
      * declared by the Class object. This includes public, protected, default (package) access, and
      * private fields, includes inherited fields. This method returns null if the class or interface
      * declares no fields.
      */
-    public static final <T extends Annotation> List<Field> getFieldsWithAnnotations(Class<?> clazz,
-            Class<?>... annotationClasses) {
+    public static final <T extends Annotation> List<Field> getFieldsWithAnnotations(Class<?> clazz, Class<?>... annotationClasses) {
         return getFieldsWithAnyAnnotations(clazz, annotationClasses);
     }
-
+    
     /**
      * @see {@link #getFieldsWithAnnotations(Class, Class...)}
      */
-    public static final <T extends Annotation> List<Field> getFieldsWithAnyAnnotations(Class<?> clazz,
-            Class... annotationClasses) {
+    public static final <T extends Annotation> List<Field> getFieldsWithAnyAnnotations(Class<?> clazz, Class... annotationClasses) {
         // Get fields of class
         List<Field> fields = getFields(clazz);
-        if (fields == null || fields.isEmpty()) return null;
-
+        if (fields == null || fields.isEmpty()) {
+            return null;
+        }
+        
         // Checking for fields with annotations
-        List<Field> fieldsWithAnnotation = new ArrayList<Field>();
+        List<Field> fieldsWithAnnotation = new ArrayList<>();
         for (Field field : fields) {
             if (hasAnyAnnotations(field, annotationClasses)) {
                 fieldsWithAnnotation.add(field);
             }
         }
-
+        
         return fieldsWithAnnotation.isEmpty() ? null : fieldsWithAnnotation;
     }
-
+    
     /**
      * @see {@link #getFieldsWithAnnotations(Class, Class...)}
      */
-    public static final <T extends Annotation> List<Field> getFieldsWithAllAnnotations(Class<?> clazz,
-            Class<T>... annotationClasses) {
+    public static final <T extends Annotation> List<Field> getFieldsWithAllAnnotations(Class<?> clazz, Class<T>... annotationClasses) {
         // Get fields of class
         List<Field> fields = getFields(clazz);
-        if (fields == null || fields.isEmpty()) return null;
-
+        if (fields == null || fields.isEmpty()) {
+            return null;
+        }
+        
         // Checking for fields with annotations
-        List<Field> fieldsWithAnnotation = new ArrayList<Field>();
+        List<Field> fieldsWithAnnotation = new ArrayList<>();
         for (Field field : fields) {
             if (hasAllAnnotations(field, annotationClasses)) {
                 fieldsWithAnnotation.add(field);
             }
         }
-
+        
         return fieldsWithAnnotation.isEmpty() ? null : fieldsWithAnnotation;
     }
-
+    
     /**
      * An convenience method, equivalent to {@link #getFieldByName(Class, String)}
      */
     public static final Field getFieldByName(Object obj, String fieldName) {
         return obj != null ? getFieldByName(obj.getClass(), fieldName) : null;
     }
-
+    
     /**
      * Return a field objects of the class if and only if the field name represents the same
      * sequence of characters as the specified String
@@ -166,23 +175,30 @@ public final class ReflectionUtils {
      */
     public static final Field getFieldByName(Class<?> clazz, String fieldName) {
         // Checking for filed name
-        if (fieldName == null || fieldName.length() == 0) return null;
-
+        if (fieldName == null || fieldName.length() == 0) {
+            return null;
+        }
+        
         // Get fields list of class
         List<Field> fields = getFields(clazz);
-        if (fields == null || fields.isEmpty()) return null;
-
+        if (fields == null || fields.isEmpty()) {
+            return null;
+        }
+        
         // Search by field name
         for (Field field : fields) {
-            if (fieldName.equals(field.getName())) return field;
+            if (fieldName.equals(field.getName())) {
+                return field;
+            }
         }
-
+        
         // Not found
         return null;
     }
-
+    
     /**
      * Return true if field has at least one annotation class, otherwise return false
+     * 
      * @param field
      * @param classes
      *            corresponding to the annotation class
@@ -192,40 +208,48 @@ public final class ReflectionUtils {
     public static final <T extends Annotation> boolean hasAnnotations(Field field, Class<?>... classes) {
         return hasAnyAnnotations(field, classes);
     }
-
+    
     /**
      * @see {@link #hasAnnotations(Field, Class...)}
      */
     public static final <T extends Annotation> boolean hasAnyAnnotations(Field field, Class... classes) {
-        if (classes == null || classes.length == 0) return false;
-
-        for (Class<T> clazz : classes) {
-            if (field.isAnnotationPresent(clazz)) return true;
+        if (classes == null || classes.length == 0) {
+            return false;
         }
-
+        
+        for (Class<T> clazz : classes) {
+            if (field.isAnnotationPresent(clazz)) {
+                return true;
+            }
+        }
+        
         return false;
     }
-
+    
     /**
      * @see {@link #hasAnnotations(Field, Class...)}
      */
     public static final <T extends Annotation> boolean hasAllAnnotations(Field field, Class... classes) {
-        if (classes == null || classes.length == 0) return false;
-
-        for (Class<T> clazz : classes) {
-            if (!field.isAnnotationPresent(clazz)) return false;
+        if (classes == null || classes.length == 0) {
+            return false;
         }
-
+        
+        for (Class<T> clazz : classes) {
+            if (!field.isAnnotationPresent(clazz)) {
+                return false;
+            }
+        }
+        
         return true;
     }
-
+    
     /**
      * An convenience method, equivalent to {@link #hasAnnotationClass(Class, Class)}
      */
     public static final <T extends Annotation> boolean hasAnnotationClass(Object object, Class<T> annotationClass) {
         return object != null ? hasAnnotationClass(object.getClass(), annotationClass) : null;
     }
-
+    
     /**
      * Return true if class object has a specific annotation class, otherwise return false
      * 
@@ -237,7 +261,7 @@ public final class ReflectionUtils {
     public static final <T extends Annotation> boolean hasAnnotationClass(Class<?> entityClass, Class<T> annotationClass) {
         return entityClass != null && entityClass.isAnnotationPresent(annotationClass);
     }
-
+    
     /**
      * Return a specific annotation class if exist in class, otherwise return false
      * 
@@ -249,7 +273,7 @@ public final class ReflectionUtils {
     public static final <T extends Annotation> T getAnnotationClass(Class<?> entityClass, Class<T> annotationClass) {
         return hasAnnotationClass(entityClass, annotationClass) ? entityClass.getAnnotation(annotationClass) : null;
     }
-
+    
     /**
      * Return the field value as a Object
      * 
@@ -260,8 +284,10 @@ public final class ReflectionUtils {
      */
     public static final Object getValue(final Object object, final Field field) {
         // Checking for objects
-        if (field == null || object == null) return null;
-
+        if (field == null || object == null) {
+            return null;
+        }
+        
         try {
             // Suppress java language access
             field.setAccessible(true);
@@ -271,7 +297,7 @@ public final class ReflectionUtils {
             return null;
         }
     }
-
+    
     /**
      * Return the field value as a specific type
      * 
@@ -286,23 +312,27 @@ public final class ReflectionUtils {
         Object value = getValue(object, field);
         return value != null && value.getClass().equals(clazz) ? clazz.cast(value) : null;
     }
-
+    
     public static final void setValue(final Object obj, final Object value, final Field field) {
         // Checking for objects
-        if (field == null || obj == null) return;
-
+        if (field == null || obj == null) {
+            return;
+        }
+        
         try {
             // Get the old value
             Object oldValue = getValue(obj, field);
             // If is the same value
-            if (oldValue == value) return;
+            if (oldValue == value) {
+                return;
+            }
             // Set the new value
             field.set(obj, value);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     /**
      * Return true if the object is a instance of collection, otherwise return false
      * 
@@ -312,7 +342,7 @@ public final class ReflectionUtils {
     public static final boolean isFieldIsCollection(Object object) {
         return ((object instanceof java.util.AbstractList) || (object instanceof java.util.AbstractSet));
     }
-
+    
     /**
      * Return true if the object is a array, otherwise return false
      * 
@@ -322,5 +352,5 @@ public final class ReflectionUtils {
     public static final boolean isFieldIsArray(Object object) {
         return object != null && object.getClass().getComponentType() != null;
     }
-
+    
 }

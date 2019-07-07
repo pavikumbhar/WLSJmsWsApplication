@@ -1,10 +1,5 @@
 package com.pavikumbhar.javaheart.util;
 
-
-
-import org.hibernate.Session;
-
-import javax.persistence.EntityManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
@@ -16,23 +11,25 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+
+import org.hibernate.Session;
 
 public class ColumnMapper {
-
+    
     private ColumnMapper() {
     }
-
-
-
-    public static List<Map<String, Object>> asListOfMaps(final List<Object[]> queryResultAsListOfObjectArrays, final Map<String, Integer> columnNameToIndexMap) {
-        final Function<Object[], Map<String, Object>> rowValueArrayToColumnNameToValueMap = rowValueArray -> getColumNameToValueMapFromRowValueArray(rowValueArray, columnNameToIndexMap);
+    
+    public static List<Map<String, Object>> asListOfMaps(final List<Object[]> queryResultAsListOfObjectArrays,
+            final Map<String, Integer> columnNameToIndexMap) {
+        final Function<Object[], Map<String, Object>> rowValueArrayToColumnNameToValueMap = rowValueArray -> getColumNameToValueMapFromRowValueArray(
+                rowValueArray, columnNameToIndexMap);
         return queryResultAsListOfObjectArrays.stream().map(rowValueArrayToColumnNameToValueMap).collect(Collectors.toList());
     }
-
+    
     //remember to close the passed EntityManager outside of this
-    public static Map<String, Integer> getColumnNameToIndexMap(final String queryString, final EntityManager em) throws
-                                                                                                                 SQLException {
-
+    public static Map<String, Integer> getColumnNameToIndexMap(final String queryString, final EntityManager em) throws SQLException {
+        
         final Session session = em.unwrap(Session.class); // ATTENTION! This is Hibernate-specific!
         final AtomicReference<ResultSetMetaData> msRef = new AtomicReference<>();
         session.doWork((c) -> {
@@ -50,20 +47,19 @@ public class ColumnMapper {
         }
         return columnNameToColumnIndex;
     }
-
+    
     private static Map<String, Object> getColumNameToValueMapFromRowValueArray(final Object[] rowValueArray, final Map<String, Integer> columnNameToIndexMap) {
         // stream().collect(toMap(keyFunct, valueFunct)...) will not accept "null" values, so we do it this way:
         final Map<String, Object> result = new LinkedHashMap<>();
         columnNameToIndexMap.forEach((key, value) -> result.put(key, rowValueArray[value]));
         return result;
     }
-
-    private static PreparedStatement create(final Connection connection, final String queryStringWithNamedParameters)
-            throws SQLException {
+    
+    private static PreparedStatement create(final Connection connection, final String queryStringWithNamedParameters) throws SQLException {
         final String parsedQuery = parse(queryStringWithNamedParameters);
         return connection.prepareStatement(parsedQuery);
     }
-
+    
     private static String parse(final String query) {
         // I was originally using regular expressions, but they didn't work well for ignoring
         // parameter-like strings inside quotes.
@@ -71,7 +67,7 @@ public class ColumnMapper {
         final StringBuilder parsedQuery = new StringBuilder(length);
         boolean inSingleQuote = false;
         boolean inDoubleQuote = false;
-
+        
         for (int i = 0; i < length; ++i) {
             char c = query.charAt(i);
             if (inSingleQuote) {
@@ -101,5 +97,5 @@ public class ColumnMapper {
         }
         return parsedQuery.toString();
     }
-
+    
 }

@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public abstract class WSEndpointConfiguration {
-
-	@Autowired
-	protected Bus bus;
-
+    
+    @Autowired
+    protected Bus bus;
+    
 }

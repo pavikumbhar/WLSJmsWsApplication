@@ -1,5 +1,7 @@
 package com.pavikumbhar.javaheart.config;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import java.io.StringReader;
 
 import javax.xml.transform.stream.StreamResult;
@@ -17,27 +19,27 @@ import org.springframework.core.env.Environment;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
 /**
  * Class to configure and make a webservice call
  */
 
 /**
  * Class to configure and make a webservice call
+ * 
  * @author pavikumbhar
  *
  */
 public abstract class WebServiceClient {
-
-	@Autowired
-	private Environment environment;
-
+    
+    @Autowired
+    private Environment environment;
+    
     @Autowired
     private WebServiceTemplate webServicetemplate;
     
     /**
-     *  Makes a webservice call using the provided URI with xml as the body
+     * Makes a webservice call using the provided URI with xml as the body
+     * 
      * @param xml
      * @return
      */
@@ -53,7 +55,7 @@ public abstract class WebServiceClient {
             HttpComponentsMessageSender header = new HttpComponentsMessageSender(httpClient);
             webServicetemplate.setMessageSender(header);
         }
-
+        
         StringBuilder buf = new StringBuilder();
         buf.append(getProperty(getSoapReqPrefixProp()));
         buf.append(xml);
@@ -63,24 +65,24 @@ public abstract class WebServiceClient {
         webServicetemplate.sendSourceAndReceiveToResult(source, result);
         return result;
     }
-
+    
     private String getProperty(String key) {
-         return environment.getProperty(key);
+        return environment.getProperty(key);
     }
-
+    
     /** This method fetches the SOAP Prefix for Response */
     protected abstract String getSoapReqPrefixProp();
-
+    
     /** This method fetches the SOAP Suffix for Response */
     protected abstract String getSoapReqSuffixProp();
-
+    
     /** This method fetches the SOAP URI for Response */
     protected abstract String getUriProp();
-
+    
     /** This method fetches the User Name for WSDL */
     protected abstract String getUserName();
-
+    
     /** This method fetches the Password for WSDL */
     protected abstract String getPassword();
-
+    
 }

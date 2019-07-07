@@ -9,14 +9,10 @@ import javax.xml.ws.ResponseWrapper;
 
 @WebService(targetNamespace = "http://pavikumbhar.javaheart/", name = "Hello")
 public interface Hello {
-
+    
     @WebResult(name = "return", targetNamespace = "")
-    @RequestWrapper(localName = "sayHello",
-            targetNamespace = "http://pavikumbhar.javaheart/",
-            className = "com.pavikumbhar.javaheart.ws.SayHello")
+    @RequestWrapper(localName = "sayHello", targetNamespace = "http://pavikumbhar.javaheart/", className = "com.pavikumbhar.javaheart.ws.SayHello")
     @WebMethod(action = "urn:SayHello")
-    @ResponseWrapper(localName = "sayHelloResponse",
-            targetNamespace = "http://pavikumbhar.javaheart",
-            className = "com.pavikumbhar.javaheart.ws.SayHelloResponse")
+    @ResponseWrapper(localName = "sayHelloResponse", targetNamespace = "http://pavikumbhar.javaheart", className = "com.pavikumbhar.javaheart.ws.SayHelloResponse")
     String sayHello(@WebParam(name = "myname", targetNamespace = "") String myname);
 }

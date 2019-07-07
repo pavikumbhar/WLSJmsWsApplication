@@ -27,12 +27,9 @@ import com.pavikumbhar.javaheart.config.JmsDestinationParameter;
 import com.pavikumbhar.javaheart.config.WLSJmsConfiguration;
 import com.pavikumbhar.javaheart.jms.listener.ServiceTwoMessageListener;
 
-
-
 /**
  * 
- * @author pavikumbhar
- * Configurer for ServiceTwo JMS interface
+ * @author pavikumbhar Configurer for ServiceTwo JMS interface
  */
 @Configuration
 @ConditionalOnProperty(value = "servicetwo", havingValue = "true")
@@ -73,20 +70,18 @@ public class ServiceTwoJmsConfigurer extends WLSJmsConfiguration {
     /** Queue on which response is to be posted */
     @Bean
     public Destination serviceTwoResponseQueue() {
-        return  lookupResource(getProperty(SERVICE_TWO_RESPONSE_QUEUE),Destination.class);
+        return lookupResource(getProperty(SERVICE_TWO_RESPONSE_QUEUE), Destination.class);
     }
     
-	
     @Override
     protected Properties jndiProperties() {
         return serviceTwoJndiProperties();
     }
- 
-
+    
     @Bean
     public DefaultMessageListenerContainer serviceTwoJmsContainer() {
-    	JmsDestinationParameter jmsDestinationParameter = new JmsDestinationParameter(SERVICE_TWO_REQUEST_QUEUE, serviceTwoConnectionFactory(), serviceTwoJndiDestinationResolver(), SERVICE_TWO_CONCURRENCY,
-				SERVICE_TWO_CONCURRENT_CONSUMERS, messageListener, serviceTwoJndiProperties());
+        JmsDestinationParameter jmsDestinationParameter = new JmsDestinationParameter(SERVICE_TWO_REQUEST_QUEUE, serviceTwoConnectionFactory(),
+                serviceTwoJndiDestinationResolver(), SERVICE_TWO_CONCURRENCY, SERVICE_TWO_CONCURRENT_CONSUMERS, messageListener, serviceTwoJndiProperties());
         return createJmsContainer(jmsDestinationParameter);
     }
     
